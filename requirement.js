@@ -57,5 +57,6 @@
 //a> get method
 
 // get all author ✔️ .
-// get spcific author based on id.
-//get list of author based on list  
+// get spcific author based on id ✔️.
+//get list of author based on isbn ✔️.
+

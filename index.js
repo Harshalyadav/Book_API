@@ -143,19 +143,22 @@ booky.get("/author/id/:id",(req,res)=>{
 
 /*
    Route        /author/book/
-   Description  get author from book 
-   Parameter    /:book
+   Description  get all author based on book 
+   Parameter    /:isbn
    Method      get
    Access      public
 */
 
-booky.get("/author/boo/:book",(req,res)=>{
-   const getAuthorBook =database.author.filter(
-     (author)=> author.books.includes(req.params.book)
+booky.get("/author/book/:isbn",(req,res)=>{
+   const getSpecificAuthor = database.author.filter(
+     (author) => author.books.includes(req.params.isbn)
    )
-
    
-   return res.json({author: getAuthorBook});
+   if(getSpecificAuthor.length === 0 ){
+      return res.json({error:`No author is found based on this isbn ${req.params.isbn}`})
+   }
+   
+   return res.json({author: getSpecificAuthor});
 });
 
 
