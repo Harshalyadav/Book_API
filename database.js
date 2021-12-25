@@ -31,14 +31,14 @@ let author =[
 },
 {
     id    : 2,
-    name  : "pokmon",
+    name  : "pokemon",
     books : ["12345abooks"],
 
 }];
 
 let publications =[
     {
-        id    : 1, 
+        id    : "1", 
         names : "pentagon",
         books : ["12345abooks"],
 

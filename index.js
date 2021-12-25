@@ -107,14 +107,14 @@ booky.get("/price/:p",(req,res)=>{
   });
 
   /*
-   Router         /
+   Router         /author
    Description    get all book based on author
-   Parameter      /:author
+   Parameter      none
    Method         get
    Access         public
 
   */
- booky.get('/:author',(req,res)=>{
+ booky.get('/author',(req,res)=>{
    return res.json({author:database.author})
  });
 
@@ -161,7 +161,56 @@ booky.get("/author/book/:isbn",(req,res)=>{
    return res.json({author: getSpecificAuthor});
 });
 
+/* 
+       Route         /publications
+       Description   get all publication
+       Parameter     None
+       Access        public
+       Method        get
 
+*/
+
+booky.get("/publications",(req,res)=>{
+  return res.json({publications : database.publications});
+});
+
+
+/* 
+  Route         /publications/books
+  Description   to get specific publication 
+  Access        public
+  Parameter     /:id
+  Method        get
+
+*/
+booky.get("/publications/books/:id",(req,res)=>{
+  const getSpecificPublication = database.publications.filter(
+    (publication)=> publication.id === req.params.id
+   )
+   if(getSpecificPublication.length === 0){
+     return res.json({error : `No publication found based on these id ${req.params.id}`});
+   }
+
+   return res.json({publication: getSpecificPublication});
+
+});
+
+/*
+   Route         /publications/books/pub
+   Description   get list of publications based on book 
+   Parameter     /:isbn
+   Access        public
+   Method        get
+*/
+booky.get("/publications/books/pub/:isbn",(req,res)=>{
+  const getPublicationBook = database.publications.filter(
+    (publications)=>publications.books.includes(req.params.isbn)
+  )
+   if(getPublicationBook.length === 0){
+     return res.json({error:`no publication found based on this ${req.params.isbn}`});
+   }
+  return res.json({publications : getPublicationBook})
+});
 booky.listen(3000, ()=>{
     console.log("Server is running 🚀")
 });
