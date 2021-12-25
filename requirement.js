@@ -65,6 +65,6 @@
 
 //a>get method
 
-//to get all publication.
-//to get spcific publication.
-//to get list of publication based on book.
+//to get all publication ✔️.
+//to get spcific publication ✔️.
+//to get list of publication based on book ✔️.
