@@ -2,6 +2,7 @@ let books=[{
     ISBN : "123book",
     title: "Harry porter",
     pubDate:"2021-12-22",
+    language: "English",
     price :"3$",
     pagNo :"250",
     author:[1,2],
@@ -17,7 +18,7 @@ let books=[{
     price    : "21$",
     pagNo    : "251",
     author   : [1],
-    category : ["entertainments","Action","Drama"], 
+    category : ["entertainments","funny","Drama"], 
     publication:[1]   
 }
 ];

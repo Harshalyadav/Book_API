@@ -1,7 +1,3 @@
-// 1> Install init.
-//2> Install express version 8.1.3,"npm install express".
-
-//3> Install nodemone.
 
 
 
@@ -32,14 +28,14 @@
 
 //......APIs.......
 
-// 1> Book
+// 1>... Book...
 
 // a> GET method
 
 // to get all books ✔️.
-// to get specifice books.
-// to get list of book based on category. 
-// to get list of book based on language.
+// to get specifice books ✔️.
+// to get list of book based on category ✔️. 
+// to get list of book based on language ✔️.
 
 // b> POST method
 
@@ -55,6 +51,11 @@
 
 // update publication.
 // name. 
-//2> Author
 
-//  
+//2>.... Author...
+
+//a> get method
+
+// get all author ✔️ .
+// get spcific author based on id.
+//get list of author based on list  
