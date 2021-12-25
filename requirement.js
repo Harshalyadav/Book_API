@@ -38,19 +38,15 @@
 // to get list of book based on language ✔️.
 
 // b> POST method
-
-// add new books.
+// add new books ✔️.
 
 //c> PUT method
-
 // update books.
 // name, price, pageNo, tile.
 
-// update author.
-// name,id.
-
-// update publication.
-// name. 
+//d> Delete method
+//delete a book
+//delete an author
 
 //2>.... Author...
 
@@ -60,6 +56,15 @@
 // get spcific author  ✔️.
 //get list of author based on book ✔️.
 
+//b> POST method
+//add new author ✔️.
+
+//c> PUT method
+//update author name
+
+//d> Delete method
+//delete an author
+
 
 //3>....Publications.....
 
@@ -68,3 +73,14 @@
 //to get all publication ✔️.
 //to get spcific publication ✔️.
 //to get list of publication based on book ✔️.
+
+// b> POST method
+//add new publication ✔️.
+
+//c> PUT method
+// update publication name.
+//update/add books to publication.
+
+//Delete method
+//delete the publication
+//delete a books from publication.

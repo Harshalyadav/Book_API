@@ -1,8 +1,11 @@
 const express =require('express');
 const database =require('./database');
 
+
+
 const booky=express();
 
+booky.use(express.json());
 
 /*
   Route         /all books
@@ -211,6 +214,56 @@ booky.get("/publications/books/pub/:isbn",(req,res)=>{
    }
   return res.json({publications : getPublicationBook})
 });
+
+
+//............ Post method............
+/*
+  Route         /books/add
+  Description   add new book
+  Access        public
+  Parameter     none
+  Method        post
+*/
+booky.post("/book/add",(req,res)=>{
+  // console.log(req.body);
+  const {addNewBook} = req.body;
+  database.books.push(addNewBook);
+  return res.json({books: database.books});
+
+});
+
+/*
+  Route         /author/add
+  Description   add new author
+  Access        public
+  Parameter     none
+  Method        post
+*/
+
+booky.post("/author/add",(req,res)=>{
+
+  const {newAuthor} = req.body;
+  database.author.push(newAuthor);
+
+  return res.json({author : database.author});
+
+});
+
+/*
+    Route        /publication/add 
+    Description  add new publication
+    Parameter    None
+    Method       post
+    Access       public
+
+*/
+
+booky.post("/publication/add",(req,res)=>{
+  const {newPublication} = req.body;
+  database.publications.push(newPublication);
+  return res.json({publications : database.publications});
+});
+
 booky.listen(3000, ()=>{
     console.log("Server is running 🚀")
 });
