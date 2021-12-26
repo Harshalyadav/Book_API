@@ -39,7 +39,7 @@ let author =[
 
 let publications =[
     {
-        id    : "1", 
+        id    : 1, 
         names : "pentagon",
         books : ["12345abooks"],
 
@@ -47,7 +47,7 @@ let publications =[
     {
         id    : 2, 
         names : "isro",
-        books :["123books"] 
+        books :["123book"] 
     }
 ] ;
 

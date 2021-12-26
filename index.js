@@ -132,7 +132,7 @@ booky.get("/price/:p",(req,res)=>{
 
 booky.get("/author/id/:id",(req,res)=>{
   const getSpecificAuthor = database.author.filter(
-    (author)=> author.id === req.params.id
+    (author)=> author.id === parseInt(req.params.id)
 
     )
   
@@ -188,7 +188,7 @@ booky.get("/publications",(req,res)=>{
 */
 booky.get("/publications/books/:id",(req,res)=>{
   const getSpecificPublication = database.publications.filter(
-    (publication)=> publication.id === req.params.id
+    (publication)=> publication.id === parseInt(req.params.id)
    )
    if(getSpecificPublication.length === 0){
      return res.json({error : `No publication found based on these id ${req.params.id}`});
@@ -264,6 +264,127 @@ booky.post("/publication/add",(req,res)=>{
   return res.json({publications : database.publications});
 });
 
+
+//.........PUT method.................
+
+/*
+   Route        /book/update/title
+   Description  update book title
+   Access       public
+   Parameter    /:isbn
+   Methods        put
+
+*/
+
+booky.put("/book/update/title/:isbn",(req,res)=>{
+  database.books.forEach(
+    (book)=>{
+      if(book.ISBN === req.params.isbn){
+        book.title = req.body.newBookTitle;
+        return;
+      }
+
+    });
+    return res.json({books : database.books});
+});
+
+/*
+   Route        /book/update/author
+   Description  update/add new author for a bokk
+   Access       public
+   Parameter    /:isbn
+   Methods        put
+
+*/
+//parameter and parameter
+booky.put("/book/update/author/:isbn/:authorId",(req,res)=>{
+// update book Database
+
+ database.books.forEach(
+   (book)=>{
+     if(book.ISBN === req.params.isbn){
+       return book.author.push(parseInt(req.params.authorId));
+     }
+   }
+ );
+
+ //update author Database
+ 
+ database.author.forEach(
+   (author)=>{
+     if(author.id === parseInt(req.params.authorId))
+     return author.books.push(req.params.isbn);
+   }
+ )
+
+
+ return res.json({books:database.books,author:database.author});
+
+});
+/*
+   Route         /author/update/name/
+   Description   update author name
+   Access        Public
+   Parameter     /:id
+   Method        put
+  
+ */
+
+booky.put("/author/update/:id/:name",(req,res)=>{
+     database.author.forEach(
+       (author)=>{
+         if(author.id === parseInt(req.params.id)){
+           return author.name.push(req.params.name);
+         }
+         } )
+       return res.json({author : database.author});
+});
+
+
+/*
+    Route         /publication/update/book
+    Description   update and add new publication
+    Parameter      isbn
+    Access        public
+    Method       put
+*/
+
+  //.......parameter  and body......  
+
+
+booky.put("/publication/update/book/:isbn",(req,res)=>{
+
+  // update the publication database
+  
+  database.publications.forEach(
+    (publication)=>{
+
+  //.......body......  
+
+      if(publication.id === req.body.pubId){
+           return publication.books.push(req.params.isbn);
+      }
+    }
+  );
+
+//update the book database
+ 
+ database.books.forEach(
+   (book)=>{
+  
+    //.......parameter......  
+     
+    if(book.ISBN === req.params.isbn) 
+     {
+       book.publication = req.body.pubId;
+       return;
+    };
+   }
+   );
+
+   return res.json({books:database.books, publications:database.publications});
+  
+});
 booky.listen(3000, ()=>{
     console.log("Server is running 🚀")
 });
