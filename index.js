@@ -1,11 +1,22 @@
 const express =require('express');
+
+// Using Node.js `require()`
+const mongoose = require('mongoose');
+
 const database =require('./database');
-
-
 
 const booky=express();
 
+require("dotenv").config();
+
 booky.use(express.json());
+
+
+//Establish db connection
+
+mongoose.connect( process.env.MONGO_URL,
+
+).then(()=> console.log("Connection Establish !!"));
 
 /*
   Route         /all books
@@ -217,6 +228,7 @@ booky.get("/publications/books/pub/:isbn",(req,res)=>{
 
 
 //............ Post method............
+
 /*
   Route         /books/add
   Description   add new book
@@ -282,34 +294,41 @@ booky.put("/book/update/title/:isbn",(req,res)=>{
       if(book.ISBN === req.params.isbn){
         book.title = req.body.newBookTitle;
         return;
-      }
+      }});
 
-    });
+
     return res.json({books : database.books});
+
 });
 
-/*
+/* 
    Route        /book/update/author
-   Description  update/add new author for a bokk
+   Description  update/add new author for a book
    Access       public
-   Parameter    /:isbn
+   Parameter    /:isbn/:authorId
    Methods        put
 
 */
+
+
 //parameter and parameter
+
+
+
 booky.put("/book/update/author/:isbn/:authorId",(req,res)=>{
-// update book Database
+
+// update books author Database
+// add author in books db
 
  database.books.forEach(
    (book)=>{
-     if(book.ISBN === req.params.isbn){
+     if(book.ISBN === req.params.isbn)
+     {
        return book.author.push(parseInt(req.params.authorId));
-     }
-   }
- );
+     }});
 
- //update author Database
- 
+ //update author  books Database.
+ // add book 📖 in authors db .
  database.author.forEach(
    (author)=>{
      if(author.id === parseInt(req.params.authorId))
@@ -325,20 +344,26 @@ booky.put("/book/update/author/:isbn/:authorId",(req,res)=>{
    Route         /author/update/name/
    Description   update author name
    Access        Public
-   Parameter     /:id
+   Parameter     /:id/:name
    Method        put
   
  */
 
-booky.put("/author/update/:id/:name",(req,res)=>{
-     database.author.forEach(
-       (author)=>{
-         if(author.id === parseInt(req.params.id)){
-           return author.name.push(req.params.name);
-         }
-         } )
+booky.put("/author/update/:id/:name",(req,res)=>
+{
+     database.author.forEach((author)=>{
+
+    console.log(req.params.name) ;   
+      if(author.id === parseInt(req.params.id)){
+        author.name = req.params.name;
+           return;
+         };
+       }
+     );
+
        return res.json({author : database.author});
-});
+}
+);
 
 
 /*
@@ -387,6 +412,8 @@ booky.put("/publication/update/book/:isbn",(req,res)=>{
 });
 
 
+//.........DELETE..........
+
 /*
     Route         /book/delete
     Description   delete a book
@@ -408,8 +435,8 @@ booky.delete("/book/delete/:isbn",(req,res)=>{
 
 /*
     Route         /book/delete/author
-    Description   delete a author from a book
-    Parameter     isbn,author id
+    Description   delete a author from a book/update
+    Parameter     isbn,authorId
     Access        public
     Method        delete
 */
@@ -469,7 +496,7 @@ booky.delete("/author/delete/:id",(req,res)=>{
 
 /*
     Route         /publication/delete/book
-    Description   delete a book from publication 
+    Description   delete a book from publication /update book database
     Parameter     isbn,publication id
     Access        public
     Method        delete

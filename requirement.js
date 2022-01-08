@@ -41,16 +41,16 @@
 // add new books ✔️.
 
 //c> PUT method
-// update books.
-// name, price, pageNo, tile.
+// update books ✔️.
+// name, price, pageNo, tile ✔️.
 
 //d> Delete method
-//delete a book
-//delete an author
+//delete a book ✔️
+//delete an author ✔️
 
 //2>.... Author...
 
-//a> get method
+//a> get method ✔️
 
 // get all author ✔️ .
 // get spcific author  ✔️.
@@ -60,10 +60,10 @@
 //add new author ✔️.
 
 //c> PUT method
-//update author name
+//update author name ✔️
 
 //d> Delete method
-//delete an author
+//delete an author ✔️
 
 
 //3>....Publications.....
@@ -78,9 +78,9 @@
 //add new publication ✔️.
 
 //c> PUT method
-// update publication name.
-//update/add books to publication.
+// update publication name ✔️.
+//update/add books to publication ✔️.
 
 //Delete method
-//delete the publication
-//delete a books from publication.
+//delete the publication  ✔️
+//delete a books from publication ✔️.
