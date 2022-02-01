@@ -1,7 +1,9 @@
 const Router = require('express').Router();
 
 const bookModel = require("../../database/book");
+const authorModel = require("../../database/author");
 
+const joi = require('joi');
 
 /*
   Route         /all books
@@ -12,9 +14,9 @@ const bookModel = require("../../database/book");
 
 */
 
-Router.get('/',(req,res)=>{
-    
-    return res.json({books : bookModel.books});
+Router.get('/', async(req,res)=>{
+    const allBook = await bookModel.find();
+    return res.json(allBook);
  
  });
  
@@ -28,16 +30,16 @@ Router.get('/',(req,res)=>{
  */
  
  
- Router.get("/is/:isbn", (req,res) =>
+ Router.get("/is/:isbn", async(req,res) =>
  {
-     const getSpecificBook= bookModel.books.filter(
-       (book)=>
-      
-         book.ISBN === req.params.isbn
+     const getSpecificBook= await bookModel.findOne( 
+      {
+         ISBN : req.params.isbn
+        }
        );
        
  
-       if(getSpecificBook.length === 0){
+       if(!getSpecificBook){
            return res.json({
                error:`no book found for the ISBN of ${req.params.isbn}`
              });
@@ -50,17 +52,17 @@ Router.get('/',(req,res)=>{
  /* 
      Route        /c
      Description  get book based on category.
-     Parameter    category: string
+     Parameter    category:
      Access       Public
      Method        get
   */
 
- Router.get("/c/:category",(req, res) => {
-   const getCategoryBook = bookModel.books.filter(
-     (book) => book.category.includes(req.params.category)
+ Router.get("/c/:category", async(req, res) => {
+   const getCategoryBook =await bookModel.findOne({
+   category : req.params.category}
    )
  
-   if(getCategoryBook.length === 0){
+   if(!getCategoryBook){
      return res.json({error:`No category match in ${req.params.category}`});
    }
    return res.json({book : getCategoryBook});
@@ -75,11 +77,14 @@ Router.get('/',(req,res)=>{
  
  */
  
- Router.get("/l/:language", (req,res)=>{
-   const getLanguageBook = bookModel.books.filter(
-     (book)=> book.language === req.params.language);
+ Router.get("/l/:language", async(req,res)=>{
+   const getLanguageBook = await bookModel.findOne(
+     {
+       language : req.params.language
+    }
+     );
     
-     if(getLanguageBook.length === 0){
+     if(!getLanguageBook){
  
        return res.json({error:`No book based on ${req.params.language}`});
  
@@ -97,12 +102,14 @@ Router.get('/',(req,res)=>{
  
  */
  
- Router.get("/price/:p", (req,res)=>{
-     const getAllPrice = bookModel.books.filter(
-       (book)=> book.price === req.params.p
+ Router.get("/price/:p", async(req,res)=>{
+     const getAllPrice = await bookModel.findOne(
+      {
+        price : req.params.p
+      }
      )
  
-     if(getAllPrice.length===0){
+     if(!getAllPrice){
         return res.json({error:`No book found in this  price ${req.params.p}`})
      }
      return res.json({book : getAllPrice});
@@ -121,11 +128,16 @@ Router.get('/',(req,res)=>{
   Method        post
 */
 
-Router.post("/book/add",(req,res)=>{
+Router.post("/add", async(req,res)=>{
     // console.log(req.body);
     const {addNewBook} = req.body;
-    bookModel.books.push(addNewBook);
-    return res.json({books: bookModel.books});
+    const schema = {
+      name : joi.string().min(3).required()
+    }
+    const result =joi.validate(req.body.schema);
+
+    const newBook = await bookModel.create(addNewBook);
+    return res.json({newBook});
   
   });
   
@@ -143,16 +155,22 @@ Router.post("/book/add",(req,res)=>{
 
 */
 
-Router.put("/book/update/title/:isbn",(req,res)=>{
-    bookModel.books.forEach(
-      (book)=>{
-        if(book.ISBN === req.params.isbn){
-          book.title = req.body.newBookTitle;
-          return;
-        }});
+Router.put("/update/:isbn", async(req,res)=>{
+   const updateBook = await bookModel.findOneAndUpdate(
+      {
+        ISBN : req.params.isbn
+          
+        },
+        {
+          title : req.body.bookTitle
+        },
+        {
+          new : true
+        }
+        );
   
   
-      return res.json({books : bookModel.books});
+      return res.json({updateBook});
   
   });
   
@@ -170,29 +188,45 @@ Router.put("/book/update/title/:isbn",(req,res)=>{
   
   
   
-  Router.put("/book/update/author/:isbn/:authorId",(req,res)=>{
+  Router.put("/update/author/:isbn/:authorId", async(req,res)=>{
   
   // update books author Database
   // add author in books db
   
-   bookModel.books.forEach(
-     (book)=>{
-       if(book.ISBN === req.params.isbn)
+   const updateBook = await bookModel.findOneAndUpdate(
+     {
+       ISBN : req.params.isbn
+     },
        {
-         return book.author.push(parseInt(req.params.authorId));
-       }});
+         $addToSet :{
+             author : req.params.authorId
+         }
+         
+       },
+       {
+         new : true
+       }
+       );
   
    //update author  books Database.
    // add book 📖 in authors db .
-   bookModel.author.forEach(
-     (author)=>{
-       if(author.id === parseInt(req.params.authorId))
-       return author.books.push(req.params.isbn);
+  const newAuthor = await authorModel.findOneAndUpdate(
+     {
+       id : parseInt(req.params.authorId)
+       
+     },
+     {
+       $addToSet :{
+         books : req.params.isbn
+       }
+     },
+     {
+       new : true
      }
    )
   
   
-   return res.json({books:bookModel.books,author:bookModel.author});
+   return res.json({newBook,newAuthor});
   
   });
 
@@ -208,14 +242,14 @@ Router.put("/book/update/title/:isbn",(req,res)=>{
     Access        public
     Method       put
 */
-Router.delete("/book/delete/:isbn",(req,res)=>{
-    const updatedBookDatabase = bookModel.books.filter(
-      (book)=>
-        book.ISBN !== req.params.isbn
+Router.delete("/delete/:isbn", async(req,res)=>{
+    const updatedBookDatabase = await bookModel.findOneAndDelete(
+    {
+        ISBN : req.params.isbn
+      }
       );
-  
-      bookModel.books = updatedBookDatabase;
-      return res.json({books : bookModel.books});
+      
+      return res.json({updatedBookDatabase});
   });
   
   
@@ -227,38 +261,40 @@ Router.delete("/book/delete/:isbn",(req,res)=>{
       Access        public
       Method        delete
   */
-  Router.delete("/book/delete/author/:isbn/:authorId", (req, res)=>
+  Router.delete("/delete/author/:isbn/:authorId",async (req, res)=>
      {
-       bookModel.books.forEach(
-         (book)=>{
-           if(book.ISBN === req.params.isbn)
-           {
-             const newAuthorList = book.author.filter(
-               (author) => author !== parseInt(req.params.authorId)
-             );
-             book.author = newAuthorList;
-             return;
-           }
+    const bookUpdate = await bookModel.findOneAndUpdate(
+         {
+           ISBN : req.params.isbn
+         },
+           { 
+             $pull : {
+               author : PageTransitionEvent(req.params.authorId)
+             }
+             
+         },{
+           new : true,
          }
        );
   
   
        //update the author database
   
-      bookModel.author.forEach(
-         (author) => {
-            if(author.id === parseInt(req.params.authorId))
-            {
-            const newBooksList = author.books.filter(
-                (book)=> book !== req.params.isbn
-                );
-            author.books = newBooksList;
-            return;
+      const updateAuthor=await bookModel.findOneAndUpdate(
+         {
+            id : parseInt(req.params.authorId)
+         },
+            {  
+              $pull : {
+            books : req.params.isbn
+                
           }
+        },{
+          new : true
         }
       );
   
-      return res.json({book :bookModel.books,author :bookModel.author});
+      return res.json({bookUpdate ,updateAuthor});
   });
 
   module.exports = Router;

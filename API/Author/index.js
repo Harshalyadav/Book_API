@@ -1,8 +1,12 @@
-const {author} = require("../../database");
+// const {author} = require("../../database");
 
 const Router = require('express').Router();
 
 const authorModel = require("../../database/author");
+
+
+
+
 /*
    Router         /author
    Description    get all book based on author
@@ -11,10 +15,11 @@ const authorModel = require("../../database/author");
    Access         public
 
   */
-   Router.get('/author',(req,res)=>
+   Router.get('/author',async(req,res)=>
    {
     try{
-      return res.json({author:authorModel.author})
+      const allAuthor = await authorModel.find();
+      return res.json({allAuthor});
     }catch(error){
       return res.json({error : error.message
       });
@@ -30,15 +35,19 @@ const authorModel = require("../../database/author");
      Access       public   
   */
  
- Router.get("/author/id/:id",(req,res)=>{
+ Router.get("/id/:id",async(req,res)=>{
   try{
-     const getSpecificAuthor = authorModel.author.filter(
-     (author)=> author.id === parseInt(req.params.id)
+     const getSpecificAuthor = await authorModel.findOne(
+     {
+       id : parseInt(req.params.id)
+    }
  
-     )
+     );
    
-   if(getSpecificAuthor.length === 0){
-     return res.json({error:`No author is found based on this id ${req.params.id}`});
+   if(!getSpecificAuthor){
+     return res.json({
+       error:`No author is found based on this id ${req.params.id}`
+      });
    };
  
    return res.json({author : getSpecificAuthor});
@@ -58,17 +67,27 @@ const authorModel = require("../../database/author");
     Access      public
  */
  
- Router.get("/author/book/:isbn",(req,res)=>{
-    const getSpecificAuthor = authorModel.author.filter(
-      (author) => author.books.includes(req.params.isbn)
-    )
+ Router.get("/book/:isbn",async(req,res)=>{
+  try {  
+      const getSpecificAuthor = await authorModel.findOne(
+      {
+        books : req.params.isbn
+      }
+    );
     
-    if(getSpecificAuthor.length === 0 ){
+    if(!getSpecificAuthor ){
        return res.json({error:`No author is found based on this isbn ${req.params.isbn}`})
     }
     
     return res.json({author: getSpecificAuthor});
- });
+ }
+ 
+ catch(error){
+  return res.json({
+    error : error.message
+  });
+ }
+});
 
 //............ Post method............
 
@@ -82,12 +101,12 @@ const authorModel = require("../../database/author");
   Method        post
 */
 
-Router.post("/author/add",(req,res)=>{
+Router.post("/add",async(req,res)=>{
 
     const {newAuthor} = req.body;
-    authorModel.author.push(newAuthor);
+  const nAuthor = await authorModel.create(newAuthor);
   
-    return res.json({author : authorModel.author});
+    return res.json({nAuthor});
   
   });
 
@@ -104,19 +123,20 @@ Router.post("/author/add",(req,res)=>{
   
  */
 
-   Router.put("/author/update/:id/:name",(req,res)=>
+   Router.put("/update/:id/:name",async(req,res)=>
    {
-        authorModel.author.forEach((author)=>{
-   
-       console.log(req.params.name) ;   
-         if(author.id === parseInt(req.params.id)){
-           author.name = req.params.name;
-              return;
-            };
-          }
+       const upAuthor = await authorModel. findOneAndUpdate(
+         {  
+         id : parseInt(req.params.id)
+        },
+         { $addToSet:{
+           name : req.params.name
+          } 
+        }
+          
         );
    
-          return res.json({author : authorModel.author});
+          return res.json({upAuthor});
    }
    );
    
@@ -132,13 +152,19 @@ Router.post("/author/add",(req,res)=>{
     Method        delete
 */
 
-Router.delete("/author/delete/:id",(req,res)=>{
-    const updateAuthor = authorModel.author.filter((author)=>{
-      author.id !== parseInt(req.params.id)
-    });
+//..........NOT Completed...........
+
+// Router.delete("/delete/:id",async(req,res)  =>{
+//     const updateAuthor = await authorModel.findOneAndUpdate({
+//       id : parseInt(req.params.id)
+//     },
+//     {
+      
+//     }
+//     );
     
-    authorModel.author = updateAuthor;
-    return res.json({author :authorModel.author});
-  });
-  
-  
+//     authorModel.author = updateAuthor;
+//     return res.json({author :authorModel.author});
+//   });
+
+module.exports =Router;

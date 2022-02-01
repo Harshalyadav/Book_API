@@ -24,7 +24,9 @@ mongoose.connect( process.env.MONGO_URL).then(()=> console.log("Connection Estab
 
  booky.use("/book",Books);
  booky.use("/author",Authors);
- booky.use("/book",Publications);
+ booky.use("/book",Publication);
+
+
 
 booky.listen(3000, ()=>{
     console.log("Server is running 🚀")
