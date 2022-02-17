@@ -4,14 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll --verbose"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "express": "^4.17.2",
-    "express-router": "^0.0.1",
+    "dotenv": "^16.0.0",
+    "jest": "^27.5.1",
     "joi": "^17.6.0",
     "mongoose": "^6.1.5",
     "nodemon": "^2.0.15"
