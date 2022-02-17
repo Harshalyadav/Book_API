@@ -15,7 +15,7 @@ const authorModel = require("../../database/author");
    Access         public
 
   */
-   Router.get('/author',async(req,res)=>
+   Router.get('/',async(req,res)=>
    {
     try{
       const allAuthor = await authorModel.find();

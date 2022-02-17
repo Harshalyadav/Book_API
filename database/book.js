@@ -5,15 +5,13 @@ const BookSchema = mongoose.Schema({
    ISBN :{
        type : String,
        required : true,
-       minLength : 8,
-       maxLength : 10,
+    
 
    },
    title :{
        type : String,
        required : true,
-       minLength :8,
-       maxLength :20,
+       
    },
     authors :[Number],
     language : String,

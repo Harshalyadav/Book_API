@@ -131,10 +131,10 @@ Router.get('/', async(req,res)=>{
 Router.post("/add", async(req,res)=>{
     // console.log(req.body);
     const {addNewBook} = req.body;
-    const schema = {
-      name : joi.string().min(3).required()
-    }
-    const result =joi.validate(req.body.schema);
+    // const schema = {
+    //   name : joi.string().min(3).required()
+    // }
+    // const result =joi.validate(req.body.schema);
 
     const newBook = await bookModel.create(addNewBook);
     return res.json({newBook});
