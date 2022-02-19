@@ -32,8 +32,8 @@ console.log(process.env.MONGO_URL);
  booky.use(helmet());
  booky.use(compression());
 
- 
+ const port = process.env.PORT ;
 
-booky.listen(3000, ()=>{
+booky.listen(port, ()=>{
     console.log("Server is running 🚀")
 });
