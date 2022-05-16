@@ -3,7 +3,7 @@ const Router = require('express').Router();
 const bookModel = require("../../database/book");
 const authorModel = require("../../database/author");
 
-const joi = require('joi');
+const Joi = require('joi');
 
 /*
   Route         /all books
@@ -13,13 +13,13 @@ const joi = require('joi');
   Method        GET
 
 */
+ 
+Router.get("/", async(req,res) => {
+  const allBooks = await bookModel.find();
+  return res.json({allBooks});
 
-Router.get('/', async(req,res)=>{
-    const allBook = await bookModel.find();
-    return res.json(allBook);
- 
- });
- 
+});
+
  /* 
  Route         /
  Description   get specific book
@@ -32,6 +32,7 @@ Router.get('/', async(req,res)=>{
  
  Router.get("/is/:isbn", async(req,res) =>
  {
+   
      const getSpecificBook= await bookModel.findOne( 
       {
          ISBN : req.params.isbn
@@ -129,12 +130,12 @@ Router.get('/', async(req,res)=>{
 */
 
 Router.post("/add", async(req,res)=>{
-    // console.log(req.body);
+    
     const {addNewBook} = req.body;
-    // const schema = {
-    //   name : joi.string().min(3).required()
-    // }
-    // const result =joi.validate(req.body.schema);
+    const schema = Joi.object({
+      name : Joi.string().min(3).required()
+    });
+    const result = schema.validate(req.body.schema);
 
     const newBook = await bookModel.create(addNewBook);
     return res.json({newBook});

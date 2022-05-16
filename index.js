@@ -23,7 +23,9 @@ booky.use(express.json());
 
 //Establish db connection
 
-mongoose.connect(process.env.MONGO_URL).then(()=> console.log("Connection Establish 🔥!!!"));
+mongoose.connect(process.env.MONGO_URL).then(()=> console.log("Connection Establish 🔥!!!"))
+.catch((error)=>console.log(error.message)
+);
 
 
  booky.use("/book",Books);

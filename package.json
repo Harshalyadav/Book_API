@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dev": "nodemon index",
     "test": "jest --watchAll --verbose"
     
   },
   "engines" :{ "node": "16.13.0"},
-  "author": "",
+  "author": "harshal",
   "license": "ISC",
   "dependencies": {
     "build": "^0.1.4",
