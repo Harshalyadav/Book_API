@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 
-const BookSchema = mongoose.Schema({
+const BookSchema = new mongoose.Schema({
    ISBN :{
        type : String,
        required : true,
@@ -19,6 +19,7 @@ const BookSchema = mongoose.Schema({
     numOfPage: Number,
     category : [String] ,
     publication: Number,
+    price : Number
 
 });
 
