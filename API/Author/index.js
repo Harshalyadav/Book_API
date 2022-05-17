@@ -3,6 +3,7 @@
 const Router = require('express').Router();
 
 const authorModel = require("../../database/author");
+const bookModel = require("../../database/book");
 
 
 
@@ -133,38 +134,15 @@ Router.post("/add",async(req,res)=>{
            name : req.params.name
           } 
         }
-          
-        );
+       )
    
           return res.json({upAuthor});
-   }
-   );
+      });
+
    
-//.........DELETE..........
    
+  
 
 
-/*
-    Route         /author/delete
-    Description   delete a author 
-    Parameter     author id
-    Access        public
-    Method        delete
-*/
-
-//..........NOT Completed...........
-
-// Router.delete("/delete/:id",async(req,res)  =>{
-//     const updateAuthor = await authorModel.findOneAndUpdate({
-//       id : parseInt(req.params.id)
-//     },
-//     {
-      
-//     }
-//     );
-    
-//     authorModel.author = updateAuthor;
-//     return res.json({author :authorModel.author});
-//   });
 
 module.exports =Router;

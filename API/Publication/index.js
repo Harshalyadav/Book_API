@@ -79,9 +79,11 @@ Router.get("/", async(req,res)=>{
 */
 
 Router.post("/add", async(req,res)=>{
+
     const {newPublication} = req.body;
     const newPublications = await publicationModel.create(newPublication);
     return res.json({newPublications});
+  
   });
   
     

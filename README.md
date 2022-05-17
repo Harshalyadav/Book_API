@@ -23,7 +23,28 @@ iii> how to get specific book :
 ![Add_book](./Image/specific_book.png)
 
 
+# Similar : 
+ get book based on Price  :
+https://bookbookapi.herokuapp.com/book/price/200
 
+get book based on category : 
+https://bookbookapi.herokuapp.com/book/c/programming
+
+## Author :
+
+i> Add author :
+
+![Add_book](./Image/add_author.png)
+
+ii> Get all author by id : 
+
+![Add_book](./Image/all_author.png)
+
+
+## command to run server  : 
+" npx nodemon index "
+
+## This is some package that I've used  :
 
 ```
 1> Install init.
@@ -34,13 +55,12 @@ iii> how to get specific book :
 
 3> Install nodemone  (nodemon: 2.0.15).
 
-4>command to run server  "npx nodemon index".
 
-5> Install dotenv(dotenv : 10.0.0).
+4> Install dotenv(dotenv : 10.0.0).
     npm i dotenv
     
 
-6> Install Mongoose (mongoose: 6.1.5)
+5> Install Mongoose (mongoose: 6.1.5)
     npm i mongoose
     
 ```
