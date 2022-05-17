@@ -6,9 +6,21 @@
 # How to use this API.
 
 
-1> how to add book :
+i> how to add book :
 
 ![Add_book](./Image/post-add_book.png)
+
+ii> how to get all books :
+
+
+![Add_book](./Image/get_all_book.png)
+
+iii> how to get specific book : 
+<br>
+`note :
+     123book is a ISBN number.`
+
+![Add_book](./Image/specific_book.png)
 
 
 
