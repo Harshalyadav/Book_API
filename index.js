@@ -30,7 +30,7 @@ mongoose.connect(process.env.MONGO_URL).then(()=> console.log("Connection Establ
 
  booky.use("/book",Books);
  booky.use("/author",Authors);
- booky.use("/book",Publication);
+ booky.use("/publication",Publication);
  booky.use(helmet());
  booky.use(compression());
 

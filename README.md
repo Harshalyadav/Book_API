@@ -41,6 +41,13 @@ ii> Get all author by id :
 ![Add_book](./Image/all_author.png)
 
 
+# Publication
+
+i> Add Publication :
+     
+![Add_book](./Image/add_pub.png)
+
+
 ## command to run server  : 
 " npx nodemon index "
 
