@@ -24,11 +24,25 @@ iii> how to get specific book :
 
 
 # Similar : 
- get book based on Price  :
+iv> get book based on Price  :
 https://bookbookapi.herokuapp.com/book/price/200
 
-get book based on category : 
+here: 200 is price.
+
+v> get book based on category :
+
 https://bookbookapi.herokuapp.com/book/c/programming
+
+here : programming is parameter.
+
+vi> Delete :
+
+delete book :
+https://bookbookapi.herokuapp.com/book/delete/123book
+
+here : 123book is isbn number of book
+
+![Add_book](./Image/delete_book_isbn.png)
 
 ## Author :
 
