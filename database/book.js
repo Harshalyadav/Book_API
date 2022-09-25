@@ -4,14 +4,11 @@ const mongoose = require('mongoose');
 const BookSchema = new mongoose.Schema({
    ISBN :{
        type : String,
-       required : true,
-    
-
+       required : true,  
    },
    title :{
        type : String,
        required : true,
-       
    },
     authors :[Number],
     language : String,
