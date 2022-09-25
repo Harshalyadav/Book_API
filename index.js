@@ -37,5 +37,5 @@ mongoose.connect(process.env.MONGO_URL).then(()=> console.log("Connection Establ
  const port = process.env.PORT ;
 
 booky.listen(port, ()=>{
-    console.log("Server is running 🚀")
+    console.log(`Server is running on port number ${port} 🚀`)
 });
